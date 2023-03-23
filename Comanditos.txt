@@ -1,0 +1,14 @@
+Comandos GitHub
+
+git clone git@gitExample
+git add . (Guarda todos los cambios)
+git add Example.cpp (Guarda los cambios del Example.cpp)
+git commit -m "Comentario"  (Agrega un comentario al commit) (No es necesario)
+git push origin Branch (Sube los cambios a la nube)
+git checkout -b ExampleBranch (Creacion de la nueva rama) (Estar siempre en Main)
+git checkout ExambleBranch (Pasaje de ramas)
+git fetch (Extraccion de las ramas en la nube)
+git pull origin Branch (Extrae los cambios en la nube de la rama)
+git pull --rebase origin Branch (Te rebaseas del Branch)
+git push -f origin Branch (Forzar el pusheo a tu rama)
+
