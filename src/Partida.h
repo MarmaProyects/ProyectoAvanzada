@@ -10,21 +10,20 @@
 
 #include<iostream>
 #include<string>
+#include"DTFecha.h"
+
 using namespace std;
 
-enum DTfecha{
-	DIA, MES, ANIO
-};
 class Partida {
 private:
-	DTfecha fecha;
+	DTFecha* fecha;
 	float duracion;
 public:
 	Partida();
 	virtual ~Partida();
-	Partida(DTfecha, float);
-	DTfecha getFecha();
-	void setFecha(DTfecha);
+	Partida(DTFecha*, float);
+	DTFecha* getFecha();
+	void setFecha(DTFecha);
 	float getDuracion();
 	void setDuracion(float);
 	virtual float darTotalHorasParticipantes();
