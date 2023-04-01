@@ -17,7 +17,9 @@ private:
 	string nickname;
 	int edad;
 	string contrasenia;
-
+	//TODO
+	//vector<Partida*> partidasIniciadas;
+	//vector<Partida*> partidasMultujugador;
 public:
 	Jugador();
 	virtual ~Jugador();
