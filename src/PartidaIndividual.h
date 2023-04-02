@@ -25,7 +25,7 @@ public:
 	bool getContinuaPartidaAnterior();
 	void setContinuaPartidaAnterior(bool);
 
-	float Partida:darTotalHorasParticipantes();
+	float darTotalHorasParticipantes();
 };
 
 #endif /* PARTIDAINDIVIDUAL_H_ */

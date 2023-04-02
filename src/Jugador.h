@@ -10,6 +10,8 @@
 
 #include<iostream>
 #include<string>
+#include<vector>
+#include"Partida.h"
 using namespace std;
 
 class Jugador {
@@ -18,7 +20,7 @@ private:
 	int edad;
 	string contrasenia;
 	//TODO
-	//vector<Partida*> partidasIniciadas;
+	vector<Partida*> partidasIniciadas;
 	//vector<Partida*> partidasMultujugador;
 public:
 	Jugador();
@@ -30,6 +32,8 @@ public:
 	void setNickname(string);
 	void setEdad(int);
 	void setContrasenia(string);
+	vector<Partida*>getpartidasIniciadas();
+	void agregarPartida(Partida*);
 };
 
 #endif /* JUGADOR_H_ */

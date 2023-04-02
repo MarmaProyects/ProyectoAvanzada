@@ -19,6 +19,7 @@ using namespace std;
 #include "Jugador.h"
 #include "Partida.h"
 #include "VideoJuego.h"
+#include "DTFecha.h"
 
 enum TipoJuego{
 	Accion, Aventura, Comedia, Estrategia, Shooter, MOBA

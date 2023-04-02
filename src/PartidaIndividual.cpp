@@ -31,6 +31,6 @@ void PartidaIndividual::setContinuaPartidaAnterior(bool){
 	this->continuaPartidaAnterior = continuaPartidaAnterior;
 }
 
-float Partida::darTotalHorasParticipantes(){
+float PartidaIndividual::darTotalHorasParticipantes(){
 	return this->getDuracion();
 }

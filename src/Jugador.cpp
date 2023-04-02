@@ -35,11 +35,18 @@ void Jugador::setNickname(string){
 
 void Jugador::setEdad(int){
 	this->edad = edad;
-}s
+}
 void Jugador::setContrasenia(string){
 	this->contrasenia = contrasenia;
 }
 
+vector<Partida*> Jugador::getpartidasIniciadas(){
+	return this->partidasIniciadas;
+}
+
+void Jugador::agregarPartida(Partida* partida){
+	this->partidasIniciadas.push_back(partida);
+}
 Jugador::~Jugador() {
 	// TODO Auto-generated destructor stub
 }

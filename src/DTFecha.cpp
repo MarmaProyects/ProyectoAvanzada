@@ -7,30 +7,29 @@
 
 #include "DTFecha.h"
 
-DTFecha::DTFecha() { // @suppress("Class members should be properly initialized")
-	// TODO Auto-generated constructor stub
-
-}
-
 DTFecha::~DTFecha() {
 	// TODO Auto-generated destructor stub
 }
 
-DTFecha::DTFecha(int, int, int){
-	this->dia = dia;
-	this->mes = mes;
-	this->anio = anio;
+DTFecha::DTFecha() {
+	time_t timer;
+		time(&timer);
+		struct tm *fecha;
+		fecha = localtime(&timer);
+		this->dia = fecha->tm_mday;
+		this->mes = fecha-> tm_mon + 1;
+		this->anio = fecha->tm_year + 1900;
 }
 
-int DTFecha::getDia(){
+int DTFecha::getDia() {
 	return this->dia;
 }
 
-int DTFecha::getMes(){
+int DTFecha::getMes() {
 	return this->mes;
 }
 
-int DTFecha::getAnio(){
+int DTFecha::getAnio() {
 	return this->anio;
 }
 

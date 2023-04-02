@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <iostream>
 #include <string>
+#include <time.h>
 
 using namespace std;
 
@@ -145,12 +146,24 @@ Partida* Sistema::obtenerPartidas(string videojuego, int &cantPartidas) {
 	return partidasVideoJuego[0];
 }
 
-void Sistema::iniciarPartida(string nickname, string videojuego,
-		Partida *datos) {
+void Sistema::iniciarPartida(string nickname, string videojuego,Partida *datos) {
 	try {
 		if (this->existe(nickname, "Jugadores")) {
 			if(this->existe(videojuego, "Juegos")){
-
+				DTFecha* f = new DTFecha();
+				datos->setFecha(f);
+				for(auto i: this->getJugadores()){
+					if(i->getNickname() == nickname){
+						i->agregarPartida(datos);
+						break;
+					}
+				}
+				for(auto j: this->getJuegos()){
+					if(j->getNombre() == videojuego){
+						j->agregarPartida(datos);
+						break;
+					}
+				}
 			}else {
 				throw(videojuego);
 			}

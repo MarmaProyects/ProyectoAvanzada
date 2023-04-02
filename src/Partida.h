@@ -23,7 +23,7 @@ public:
 	virtual ~Partida();
 	Partida(DTFecha*, float);
 	DTFecha* getFecha();
-	void setFecha(DTFecha);
+	void setFecha(DTFecha*);
 	float getDuracion();
 	void setDuracion(float);
 	virtual float darTotalHorasParticipantes();
