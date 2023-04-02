@@ -7,6 +7,7 @@
 
 #ifndef DTFECHA_H_
 #define DTFECHA_H_
+#include <time.h>
 
 //DataType
 class DTFecha {
@@ -22,7 +23,7 @@ public:
 	int getDia();
 	int getMes();
 	int getAnio();
-
+	void localTime();
 };
 
 #endif /* DTFECHA_H_ */

@@ -34,7 +34,7 @@ public:
 	vector<string> getParticipantes();
 	void setParticipantes(vector<string>);
 
-	float Partida:darTotalHorasParticipantes();
+	float darTotalHorasParticipantes();
 };
 
 #endif /* PARTIDAMULTIJUGADOR_H_ */

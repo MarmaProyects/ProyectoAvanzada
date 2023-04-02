@@ -16,16 +16,16 @@ Partida::~Partida() {
 	// TODO Auto-generated destructor stub
 }
 
-Partida::Partida(DTfecha fecha, float duracion){
+Partida::Partida(DTFecha* fecha, float duracion){ // @suppress("Member declaration not found")
 	this->fecha = fecha;
 	this->duracion = duracion;
 }
 
-DTfecha Partida::getFecha(){
+DTFecha* Partida::getFecha(){ // @suppress("Member declaration not found")
 	return this->fecha;
 }
 
-void Partida::setFecha(DTfecha){
+void Partida::setFecha(DTFecha*){
 	this->fecha = fecha;
 }
 

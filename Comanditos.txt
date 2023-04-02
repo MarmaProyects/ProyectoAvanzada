@@ -11,4 +11,6 @@ git fetch (Extraccion de las ramas en la nube)
 git pull origin Branch (Extrae los cambios en la nube de la rama)
 git pull --rebase origin Branch (Te rebaseas del Branch)
 git push -f origin Branch (Forzar el pusheo a tu rama)
+git stash (guarda los cambios si lo pide usarlo o si se necesita)
+git status (ver los cambios hechos)
 
