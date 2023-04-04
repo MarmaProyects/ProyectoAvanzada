@@ -7,7 +7,7 @@
 
 #include "Jugador.h"
 
-Jugador::Jugador() {
+Jugador::Jugador() { // @suppress("Class members should be properly initialized")
 	// TODO Auto-generated constructor stub
 
 }

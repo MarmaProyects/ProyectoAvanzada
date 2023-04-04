@@ -36,3 +36,7 @@ float Partida::getDuracion(){
 void Partida::setDuracion(float){
 	this->duracion = duracion;
 }
+
+float Partida::darTotalHorasParticipantes() {
+	return this->duracion;
+}

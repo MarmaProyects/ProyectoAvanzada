@@ -47,5 +47,5 @@ void PartidaMultijugador::setParticipantes(vector<string>){
 }
 
 float PartidaMultijugador::darTotalHorasParticipantes(){
-	return this->getDuracion(); //Arreglar
+	return this->getDuracion() * this->getCantJugadores();
 }

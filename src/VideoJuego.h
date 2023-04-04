@@ -16,7 +16,7 @@ using namespace std;
 
 
 enum TipoJuego{
-	Accion, Aventura, Comedia, Estrategia, Shooter, MOBA
+	Accion = 0, Aventura = 1, Comedia = 2, Estrategia = 3, Shooter = 4, MOBA = 5
 };
 
 class VideoJuego {

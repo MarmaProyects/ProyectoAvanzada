@@ -21,10 +21,6 @@ using namespace std;
 #include "VideoJuego.h"
 #include "DTFecha.h"
 
-enum TipoJuego{
-	Accion, Aventura, Comedia, Estrategia, Shooter, MOBA
-};
-
 class Sistema{
 private:
 	vector<Jugador*> jugadores;
@@ -40,10 +36,12 @@ public:
 	bool existe(string, string);
 	void agregarJugador(string nickname, int edad, string contrasenia);
 	void agregarVideojuego(string nombre, TipoJuego genero);
-	Jugador* obtenerJugadores(int& cantJugadores);
-	VideoJuego* obtenerVideojuegos(int& cantVideoJuegos);
-	Partida* obtenerPartidas(string videojuego, int& cantPartidas);
+	vector<Jugador*> obtenerJugadores(int& cantJugadores);
+	vector<VideoJuego*> obtenerVideojuegos(int& cantVideoJuegos);
+	vector<Partida*> obtenerPartidas(string videojuego, int& cantPartidas);
 	void iniciarPartida(string nickname, string videojuego, Partida* datos);
+	float buscarVideojuego(string videojuego);
+
 };
 
 #endif /* SISTEMA_H_ */
