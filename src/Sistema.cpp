@@ -20,8 +20,6 @@ using namespace std;
 #include "VideoJuego.h"
 
 Sistema::Sistema() {
-	this->jugadores = new Jugador();
-	this->juegos = new VideoJuego();
 }
 
 Sistema::~Sistema() {
@@ -63,7 +61,7 @@ void Sistema::agregarJugador(string nickname, int edad, string contrasenia) {
 		} else {
 			throw(nickname);
 		}
-	} catch (exception &nick) {
+	} catch (string &nick) {
 		cout << "Este jugador ya existe.\n";
 		cout << "Nickname: " << nick;
 	}
@@ -77,13 +75,13 @@ void Sistema::agregarVideojuego(string nombre, TipoJuego genero) {
 		} else {
 			throw(nombre);
 		}
-	} catch (exception &name) {
+	} catch (string &name) {
 		cout << "Este juego ya existe.\n";
 		cout << "Juego: " << name;
 	}
 }
 
-Jugador* Sistema::obtenerJugadores(int &cantJugadores) {
+vector<Jugador*> Sistema::obtenerJugadores(int &cantJugadores) {
 	vector<Jugador*> parteJugadores;
 	int j = 0;
 	for (auto i : this->jugadores) {
@@ -99,10 +97,10 @@ Jugador* Sistema::obtenerJugadores(int &cantJugadores) {
 		cantJugadores = j;
 	}
 
-	return parteJugadores[0];
+	return parteJugadores;
 }
 
-VideoJuego* Sistema::obtenerVideojuegos(int &cantVideoJuegos) {
+vector<VideoJuego*> Sistema::obtenerVideojuegos(int &cantVideoJuegos) {
 	vector<VideoJuego*> parteVideoJuegos;
 	int j = 0;
 	for (auto i : this->juegos) {
@@ -117,11 +115,10 @@ VideoJuego* Sistema::obtenerVideojuegos(int &cantVideoJuegos) {
 	if (j < cantVideoJuegos) {
 		cantVideoJuegos = j;
 	}
-
-	return parteVideoJuegos[0];
+	return parteVideoJuegos;
 }
 
-Partida* Sistema::obtenerPartidas(string videojuego, int &cantPartidas) {
+vector<Partida*> Sistema::obtenerPartidas(string videojuego, int &cantPartidas) {
 	vector<Partida*> partidasVideoJuego;
 	VideoJuego *game;
 	int contador = 0;
@@ -140,10 +137,9 @@ Partida* Sistema::obtenerPartidas(string videojuego, int &cantPartidas) {
 			break;
 		}
 	}
-
 	cantPartidas = contador;
 
-	return partidasVideoJuego[0];
+	return partidasVideoJuego;
 }
 
 void Sistema::iniciarPartida(string nickname, string videojuego,Partida *datos) {
@@ -170,8 +166,25 @@ void Sistema::iniciarPartida(string nickname, string videojuego,Partida *datos) 
 		} else {
 			throw(nickname);
 		}
-	} catch (exception &nick) {
+	} catch (string &nick) {
 		cout << "Jugador/VideoJuego no valido: " << nick << " \n";
 	}
 }
 
+float Sistema::buscarVideojuego(string videojuego) {
+	try {
+		if (this->existe(videojuego, "Juegos")) {
+			for(auto i: this->getJuegos()) {
+				if (i->getNombre() == videojuego) {
+					return i->getTotalHorasDeJuego();
+				}
+			}
+		}
+		else {
+			throw(videojuego);
+		}
+	} catch (string &videojuego) {
+		cout << "VideoJuego no valido: " << videojuego << " \n";
+	}
+	return NULL;
+}

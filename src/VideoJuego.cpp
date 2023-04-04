@@ -12,7 +12,7 @@ VideoJuego::VideoJuego() { // @suppress("Class members should be properly initia
 
 }
 
-VideoJuego::VideoJuego(string nombre, TipoJuego genero){
+VideoJuego::VideoJuego(string nombre, TipoJuego genero){ // @suppress("Class members should be properly initialized")
 	this->nombre = nombre;
 	this->genero = genero;
 }
