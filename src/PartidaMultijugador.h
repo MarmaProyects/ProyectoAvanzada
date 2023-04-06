@@ -23,7 +23,7 @@ public:
 	PartidaMultijugador();
 	virtual ~PartidaMultijugador();
 
-	PartidaMultijugador(bool, int, vector<string>);
+	PartidaMultijugador(DTFecha* fecha, float duracion, bool, int, vector<string>);
 
 	bool getTransmitidaEnVivo();
 	void setTransmitidaEnVivo(bool);

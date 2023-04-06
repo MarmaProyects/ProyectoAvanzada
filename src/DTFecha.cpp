@@ -13,12 +13,12 @@ DTFecha::~DTFecha() {
 
 DTFecha::DTFecha() {
 	time_t timer;
-		time(&timer);
-		struct tm *fecha;
-		fecha = localtime(&timer);
-		this->dia = fecha->tm_mday;
-		this->mes = fecha-> tm_mon + 1;
-		this->anio = fecha->tm_year + 1900;
+	time(&timer);
+	struct tm *fecha;
+	fecha = localtime(&timer);
+	this->dia = fecha->tm_mday;
+	this->mes = fecha->tm_mon + 1;
+	this->anio = fecha->tm_year + 1900;
 }
 
 int DTFecha::getDia() {
@@ -33,3 +33,6 @@ int DTFecha::getAnio() {
 	return this->anio;
 }
 
+string DTFecha::getTime() {
+	return to_string(this->getDia()) + "/" + to_string(this->getMes()) + "/" + to_string(this->getAnio());
+}

@@ -29,14 +29,14 @@ string Jugador::getContrasenia(){
 	return this->contrasenia;
 }
 
-void Jugador::setNickname(string){
+void Jugador::setNickname(string nickname){
 	this->nickname = nickname;
 }
 
 void Jugador::setEdad(int){
 	this->edad = edad;
 }
-void Jugador::setContrasenia(string){
+void Jugador::setContrasenia(string contrasenia){
 	this->contrasenia = contrasenia;
 }
 
@@ -44,7 +44,7 @@ vector<Partida*> Jugador::getpartidasIniciadas(){
 	return this->partidasIniciadas;
 }
 
-void Jugador::agregarPartida(Partida* partida){
+void Jugador::agregarPartida(Partida* &partida){
 	this->partidasIniciadas.push_back(partida);
 }
 Jugador::~Jugador() {

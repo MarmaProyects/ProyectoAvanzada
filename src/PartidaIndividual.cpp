@@ -6,11 +6,8 @@
  */
 
 #include "PartidaIndividual.h"
-#include<iostream>
-#include<string>
-using namespace std;
 
-PartidaIndividual::PartidaIndividual() { // @suppress("Class members should be properly initialized")
+PartidaIndividual::PartidaIndividual(){ // @suppress("Class members should be properly initialized")
 	// TODO Auto-generated constructor stub
 
 }
@@ -19,7 +16,7 @@ PartidaIndividual::~PartidaIndividual() {
 	// TODO Auto-generated destructor stub
 }
 
-PartidaIndividual::PartidaIndividual(bool) { // @suppress("Class members should be properly initialized")
+PartidaIndividual::PartidaIndividual(DTFecha* fecha, float duracion, bool continuaPartidaAnterior): Partida(fecha, duracion) { // @suppress("Class members should be properly initialized")
 	this->continuaPartidaAnterior = continuaPartidaAnterior;
 }
 
@@ -27,7 +24,7 @@ bool PartidaIndividual::getContinuaPartidaAnterior(){
 	return this->continuaPartidaAnterior;
 }
 
-void PartidaIndividual::setContinuaPartidaAnterior(bool){
+void PartidaIndividual::setContinuaPartidaAnterior(bool continuaPartidaAnterior){
 	this->continuaPartidaAnterior = continuaPartidaAnterior;
 }
 

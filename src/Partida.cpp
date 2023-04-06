@@ -25,7 +25,7 @@ DTFecha* Partida::getFecha(){ // @suppress("Member declaration not found")
 	return this->fecha;
 }
 
-void Partida::setFecha(DTFecha*){
+void Partida::setFecha(DTFecha*& fecha){
 	this->fecha = fecha;
 }
 
@@ -33,7 +33,7 @@ float Partida::getDuracion(){
 	return this->duracion;
 }
 
-void Partida::setDuracion(float){
+void Partida::setDuracion(float duracion){
 	this->duracion = duracion;
 }
 
