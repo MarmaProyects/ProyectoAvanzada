@@ -20,7 +20,7 @@ public:
 	PartidaIndividual();
 	virtual ~PartidaIndividual();
 
-	PartidaIndividual(bool);
+	PartidaIndividual(DTFecha* fecha, float duracion, bool);
 
 	bool getContinuaPartidaAnterior();
 	void setContinuaPartidaAnterior(bool);

@@ -17,6 +17,8 @@ using namespace std;
 
 #include "Jugador.h"
 #include "Partida.h"
+#include "PartidaIndividual.h"
+#include "PartidaMultijugador.h"
 #include "VideoJuego.h"
 
 Sistema::Sistema() {
@@ -63,7 +65,7 @@ void Sistema::agregarJugador(string nickname, int edad, string contrasenia) {
 		}
 	} catch (string &nick) {
 		cout << "Este jugador ya existe.\n";
-		cout << "Nickname: " << nick;
+		cout << "Nickname: " << nick << endl;
 	}
 }
 
@@ -77,7 +79,7 @@ void Sistema::agregarVideojuego(string nombre, TipoJuego genero) {
 		}
 	} catch (string &name) {
 		cout << "Este juego ya existe.\n";
-		cout << "Juego: " << name;
+		cout << "Juego: " << name << endl;
 	}
 }
 
@@ -118,7 +120,8 @@ vector<VideoJuego*> Sistema::obtenerVideojuegos(int &cantVideoJuegos) {
 	return parteVideoJuegos;
 }
 
-vector<Partida*> Sistema::obtenerPartidas(string videojuego, int &cantPartidas) {
+vector<Partida*> Sistema::obtenerPartidas(string videojuego,
+		int &cantPartidas) {
 	vector<Partida*> partidasVideoJuego;
 	VideoJuego *game;
 	int contador = 0;
@@ -133,6 +136,7 @@ vector<Partida*> Sistema::obtenerPartidas(string videojuego, int &cantPartidas) 
 	for (auto i : game->getPartidas()) {
 		if (contador < cantPartidas) {
 			partidasVideoJuego.push_back(i);
+			contador++;
 		} else {
 			break;
 		}
@@ -142,45 +146,45 @@ vector<Partida*> Sistema::obtenerPartidas(string videojuego, int &cantPartidas) 
 	return partidasVideoJuego;
 }
 
-void Sistema::iniciarPartida(string nickname, string videojuego,Partida *datos) {
+void Sistema::iniciarPartida(string nickname, string videojuego,
+		Partida *datos) {
 	try {
 		if (this->existe(nickname, "Jugadores")) {
-			if(this->existe(videojuego, "Juegos")){
+			if (this->existe(videojuego, "Juegos")) {
 				DTFecha* f = new DTFecha();
 				datos->setFecha(f);
-				for(auto i: this->getJugadores()){
-					if(i->getNickname() == nickname){
+				for (auto i : this->getJugadores()) {
+					if (i->getNickname() == nickname) {
 						i->agregarPartida(datos);
 						break;
 					}
 				}
-				for(auto j: this->getJuegos()){
-					if(j->getNombre() == videojuego){
+				for (auto j : this->getJuegos()) {
+					if (j->getNombre() == videojuego) {
 						j->agregarPartida(datos);
 						break;
 					}
 				}
-			}else {
+			} else {
 				throw(videojuego);
 			}
 		} else {
 			throw(nickname);
 		}
 	} catch (string &nick) {
-		cout << "Jugador/VideoJuego no valido: " << nick << " \n";
+		cout << "Jugador/VideoJuego no valido: " << nick << endl;
 	}
 }
 
 float Sistema::buscarVideojuego(string videojuego) {
 	try {
 		if (this->existe(videojuego, "Juegos")) {
-			for(auto i: this->getJuegos()) {
+			for (auto i : this->getJuegos()) {
 				if (i->getNombre() == videojuego) {
 					return i->getTotalHorasDeJuego();
 				}
 			}
-		}
-		else {
+		} else {
 			throw(videojuego);
 		}
 	} catch (string &videojuego) {

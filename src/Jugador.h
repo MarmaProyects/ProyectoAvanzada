@@ -19,7 +19,6 @@ private:
 	string nickname;
 	int edad;
 	string contrasenia;
-	//TODO
 	vector<Partida*> partidasIniciadas;
 	//vector<Partida*> partidasMultujugador;
 public:
@@ -33,7 +32,7 @@ public:
 	void setEdad(int);
 	void setContrasenia(string);
 	vector<Partida*>getpartidasIniciadas();
-	void agregarPartida(Partida*);
+	void agregarPartida(Partida*&);
 };
 
 #endif /* JUGADOR_H_ */
