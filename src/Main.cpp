@@ -256,7 +256,7 @@ void mostrarVector(vector<Jugador*> jug, int cant) {
 	for (auto i : jug) {
 		cout << i->getNickname() << endl;
 	}
-	cout << "Se mostro la cantidad: " << cant << endl;
+	cout << "Se mostro la cantidad : " << cant << endl;
 }
 
 void mostrarVector(vector<VideoJuego*> vid, int cant) {
