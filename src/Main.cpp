@@ -200,7 +200,7 @@ void iniPartida(string &nickname, string &videojuego, Partida* &p) {
 			cout << "Valor invalido, debe ingresar I o M ";
 		}
 	} while (tipo != "I" && tipo != "M");
-	cout << "Ingrese duracion de la partida, ejemplo: 34.3): ";
+	cout << "Ingrese duracion de la partida, ejemplo: 34.3: ";
 	cin >> duracion;
 	fflush(stdin);
 	DTFecha * f;
