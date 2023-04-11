@@ -10,6 +10,7 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include <limits>
 
 #include "Sistema.h"
 #include "PartidaIndividual.h"
@@ -24,7 +25,7 @@ void crearVideojuego(int&, string&);
 void obtJugadores(int&);
 void obtVideojuegos(int&);
 void obtPartidas(string&, int&);
-void iniPartida(string&, string&, Partida*&);
+void iniPartida(string&, string&, Partida*&, Sistema*);
 void darHorasJuego(string&);
 void mostrarVector(vector<Jugador*>, int);
 void mostrarVector(vector<VideoJuego*>, int);
@@ -46,6 +47,7 @@ int main() {
 		fflush(stdin);
 		menu();
 		cin >> opcion;
+		fflush(stdin);
 		switch (opcion) {
 		case 1:
 			crearJugador(nickname, edad, contrasenia);
@@ -71,7 +73,7 @@ int main() {
 			mostrarVector(matchs, cantPartidas);
 			break;
 		case 6:
-			iniPartida(nickname, videojuego, part);
+			iniPartida(nickname, videojuego, part, s);
 			s->iniciarPartida(nickname, videojuego, part);
 			break;
 		case 7:
@@ -109,21 +111,19 @@ void menu() {
 }
 
 void crearJugador(string &nickname, int &edad, string &contrasenia) {
-	cout << "Ingrese nombre del jugador: ";
-	cin >> nickname;
-	fflush(stdin);
-	cout << "Ingrese edad del jugador: ";
-	cin >> edad;
-	fflush(stdin);
-	cout << "Ingrese contraseña del jugador: ";
-	cin >> contrasenia;
-	fflush(stdin);
+    cout << "Ingrese nombre del jugador: ";
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    getline(cin, nickname);
+    cout << "Ingrese edad del jugador: ";
+    cin >> edad;
+    cout << "Ingrese contraseña del jugador: " ;
+    cin >> contrasenia;
 }
 
 void crearVideojuego(int &genero, string &nombre) {
 	cout << "Ingrese nombre del videojuego: ";
-	cin >> nombre;
-	fflush(stdin);
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    getline(cin, nombre);
 	cout << "Elija un genero: " << endl;
 	cout
 			<< "0. Acción \n1. Aventura \n2. Comedia \n3. Estrategia \n4. Shooter \n5. MOBA"
@@ -174,24 +174,36 @@ void obtVideojuegos(int &cant) {
 
 void obtPartidas(string &videojuego, int &cant) {
 	cout << "Ingrese nombre del videojuego: ";
-	cin >> videojuego;
-	fflush(stdin);
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    getline(cin, videojuego);
 	cout << "Ingrese cantidad de partidas: ";
 	cin >> cant;
 	fflush(stdin);
 }
 
-void iniPartida(string &nickname, string &videojuego, Partida* &p) {
+void iniPartida(string &nickname, string &videojuego, Partida* &p, Sistema* s) {
 	string tipo, booleano, nick;
 	float duracion;
 	int cant;
 	vector<string> lista;
 	cout << "Ingrese nombre del jugador: ";
-	cin >> nickname;
-	fflush(stdin);
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    getline(cin, nickname);
+	while(!s->existe(nickname, "Jugadores")){
+		cout << "Este jugador no existe: " << nickname << endl;
+		cout << "Ingrese nombre del jugador: ";
+	    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	    getline(cin, nickname);
+	}
 	cout << "Ingrese nombre del videojuego: ";
-	cin >> videojuego;
-	fflush(stdin);
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    getline(cin, videojuego);
+	while(!s->existe(videojuego, "Juegos")){
+		cout << "Este juego no existe: " << videojuego << endl;
+		cout << "Ingrese nombre del videojuego: ";
+	    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	    getline(cin, videojuego);
+	}
 	do {
 		cout << "Que tipo de partida es? I-Individual, M-Multijugador: ";
 		cin >> tipo;
@@ -231,10 +243,15 @@ void iniPartida(string &nickname, string &videojuego, Partida* &p) {
 		cin >> cant;
 		fflush(stdin);
 		cout << "Ingrese los " << cant << " jugadores:" << endl;
-		for (int i = 0; i < cant; i++) {
+		for (int i = 1; i <= cant; i++) {
 			cout << "Jugador N° " << i << endl;
-			cin >> nick;
-			fflush(stdin);
+		    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		    getline(cin, nick);
+			while (!s->existe(nick, "Jugadores")){
+				cout << "El jugador no existe, intente de nuevo: " << endl;
+			    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			    getline(cin, nick);
+			}
 			lista.push_back(nick);
 		}
 		if (booleano == "s") {
@@ -247,8 +264,8 @@ void iniPartida(string &nickname, string &videojuego, Partida* &p) {
 
 void darHorasJuego(string &videojuego) {
 	cout << "Ingrese nombre del videojuego: ";
-	cin >> videojuego;
-	fflush(stdin);
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    getline(cin, videojuego);
 }
 
 void mostrarVector(vector<Jugador*> jug, int cant) {
@@ -266,6 +283,15 @@ void mostrarVector(vector<VideoJuego*> vid, int cant) {
 		cout << i->getNombre() << endl;
 	}
 	cout << "Se mostro la cantidad: " << cant << endl;
+}
+
+bool tiene_caracteres_especiales(string str) {
+    for (char c : str) {
+        if (!std::isalnum(c)) {
+            return true;
+        }
+    }
+    return false;
 }
 
 void mostrarVector(vector<Partida*> part, int cant) {
