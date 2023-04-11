@@ -133,30 +133,30 @@ void crearVideojuego(int &genero, string &nombre) {
 }
 
 void generar(Sistema *s) {
-	s->agregarJugador("Marma", 24, "43242");
+	s->agregarJugador("MarmaduX", 24, "43242");
 	s->agregarVideojuego("Smite", MOBA);
-	s->agregarJugador("Judy", 19, "bgdf435");
-	s->agregarVideojuego("CS GO", Shooter);
-	s->agregarJugador("Angelo", 22, "432442");
+	s->agregarJugador("Judy456", 19, "bgdf435");
+	s->agregarVideojuego("CSGO", Shooter);
+	s->agregarJugador("Angeloturrito", 22, "432442");
 	s->agregarVideojuego("Terraria", Aventura);
-	s->agregarJugador("Male", 24, "bgd4f435");
-	s->agregarVideojuego("GTA Vice City", Accion);
+	s->agregarJugador("Maleelprofe", 24, "bgd4f435");
+	s->agregarVideojuego("GTA", Accion);
 	DTFecha* f;
 	Partida* part = new PartidaIndividual(f, 24.3, true);
-	s->iniciarPartida("Marma", "Smite", part);
+	s->iniciarPartida("Marmadux", "Smite", part);
 	part = new PartidaIndividual(f, 35.2, false);
 	vector<string> jugadores;
-	jugadores.push_back("Marma");
-	jugadores.push_back("Judy");
-	jugadores.push_back("Angelo");
-	jugadores.push_back("Male");
-	s->iniciarPartida("Marma", "Smite", part);
+	jugadores.push_back("Marmadux");
+	jugadores.push_back("Judy456");
+	jugadores.push_back("Angeloturrito");
+	jugadores.push_back("Maleelprofe");
+	s->iniciarPartida("Marmadux", "Smite", part);
 	part = new PartidaMultijugador(f, 76.2, false, 3, jugadores);
-	s->iniciarPartida("Marma", "Smite", part);
+	s->iniciarPartida("Marmadux", "Smite", part);
 	part = new PartidaMultijugador(f, 43.2, true, 2, jugadores);
-	s->iniciarPartida("Angelo", "Smite", part);
+	s->iniciarPartida("Angeloturrito", "Smite", part);
 	part = new PartidaMultijugador(f, 23.2, true, 4, jugadores);
-	s->iniciarPartida("Judy", "Smite", part);
+	s->iniciarPartida("Judy456", "Smite", part);
 	cout<< "Datos generados correctamente"<< endl;
 }
 
@@ -192,16 +192,16 @@ void iniPartida(string &nickname, string &videojuego, Partida* &p, Sistema* s) {
 	while(!s->existe(nickname, "Jugadores")){
 		cout << "Este jugador no existe: " << nickname << endl;
 		cout << "Ingrese nombre del jugador: ";
-	    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
 	    getline(cin, nickname);
 	}
 	cout << "Ingrese nombre del videojuego: ";
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
     getline(cin, videojuego);
 	while(!s->existe(videojuego, "Juegos")){
 		cout << "Este juego no existe: " << videojuego << endl;
 		cout << "Ingrese nombre del videojuego: ";
-	    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
 	    getline(cin, videojuego);
 	}
 	do {
@@ -245,11 +245,11 @@ void iniPartida(string &nickname, string &videojuego, Partida* &p, Sistema* s) {
 		cout << "Ingrese los " << cant << " jugadores:" << endl;
 		for (int i = 1; i <= cant; i++) {
 			cout << "Jugador N° " << i << endl;
-		    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		    getline(cin, nick);
 			while (!s->existe(nick, "Jugadores")){
 				cout << "El jugador no existe, intente de nuevo: " << endl;
-			    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
 			    getline(cin, nick);
 			}
 			lista.push_back(nick);
@@ -273,7 +273,7 @@ void mostrarVector(vector<Jugador*> jug, int cant) {
 	for (auto i : jug) {
 		cout << i->getNickname() << endl;
 	}
-	cout << "Se mostro la cantidad : " << cant << endl;
+	cout << "Se mostro la cantidad: " << cant << endl;
 }
 
 void mostrarVector(vector<VideoJuego*> vid, int cant) {
