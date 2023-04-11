@@ -39,15 +39,13 @@ vector<VideoJuego*> Sistema::getJuegos() {
 bool Sistema::existe(string ingreso, string arreglo) {
 	if (arreglo == "Jugadores") {
 		for (auto i : this->jugadores) {
-			Jugador *j = i;
-			if (j->getNickname() == ingreso) {
+			if (i->getNickname() == ingreso) {
 				return true;
 			}
 		}
 	} else {
 		for (auto i : this->juegos) {
-			VideoJuego *j = i;
-			if (j->getNombre() == ingreso) {
+			if (i->getNombre() == ingreso) {
 				return true;
 			}
 		}
@@ -125,7 +123,6 @@ vector<Partida*> Sistema::obtenerPartidas(string videojuego,
 	vector<Partida*> partidasVideoJuego;
 	VideoJuego *game;
 	int contador = 0;
-
 	for (auto i : this->juegos) {
 		if (i->getNombre() == videojuego) {
 			game = i;
