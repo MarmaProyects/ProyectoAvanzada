@@ -11,6 +11,7 @@
 #include <iostream>
 #include <vector>
 #include <limits>
+#include <algorithm>
 
 #include "Sistema.h"
 #include "PartidaIndividual.h"
@@ -19,6 +20,8 @@
 using namespace std;
 
 void menu();
+bool validarNumero(string input);
+bool validarFloat(string input);
 void generar(Sistema*);
 void crearJugador(string&, int&, string&);
 void crearVideojuego(int&, string&);
@@ -81,8 +84,6 @@ int main() {
 			horas = s->buscarVideojuego(videojuego);
 			if (horas) {
 				cout << "Este videojuego tiene: " << horas << " horas";
-			} else {
-				cout << "El videojuego no tiene horas jugadas. \n";
 			}
 			break;
 		case 8:
@@ -92,7 +93,7 @@ int main() {
 			cout << "Ingrese un numero especificado en el menu" << endl;
 			break;
 		}
-		system("sleep 3s");
+		system("sleep 1s");
 	} while (opcion != 0);
 	return 0;
 }
@@ -111,24 +112,76 @@ void menu() {
 }
 
 void crearJugador(string &nickname, int &edad, string &contrasenia) {
-    cout << "Ingrese nombre del jugador: ";
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    getline(cin, nickname);
-    cout << "Ingrese edad del jugador: ";
-    cin >> edad;
-    cout << "Ingrese contraseña del jugador: " ;
-    cin >> contrasenia;
+	string age;
+	bool entradaVacia = false;
+	cout << "Ingrese nombre del jugador: ";
+	cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	do {
+		getline(cin, nickname);
+		entradaVacia = std::all_of(nickname.begin(), nickname.end(),
+				[](char c) {
+					return std::isspace(c);
+				});
+		if (entradaVacia || nickname.empty()) {
+			cout << "El nombre no tiene que ser vacio:";
+		}
+	} while (entradaVacia || nickname.empty());
+	cout << "Ingrese edad del jugador: ";
+	cin >> age;
+	while (!validarNumero(age)) {
+		cout << "La entrada no es un número entero válido." << endl;
+		cout << "Ingrese nuevamente: ";
+		cin >> age;
+	}
+	edad = stoi(age);
+	cout << "Ingrese contraseña del jugador: ";
+	cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	do {
+		getline(cin, contrasenia);
+		entradaVacia = std::all_of(contrasenia.begin(), contrasenia.end(),
+				[](char c) {
+					return std::isspace(c);
+				});
+		if (entradaVacia || contrasenia.empty()) {
+			cout << "La contrasenia no tiene que ser vacio:";
+		}
+	} while (entradaVacia || contrasenia.empty());
+
 }
 
 void crearVideojuego(int &genero, string &nombre) {
+	string entrada;
+	bool entradaVacia = false;
 	cout << "Ingrese nombre del videojuego: ";
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    getline(cin, nombre);
+	cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	do {
+		getline(cin, nombre);
+		entradaVacia = std::all_of(nombre.begin(), nombre.end(), [](char c) {
+			return std::isspace(c);
+		});
+		if (entradaVacia || nombre.empty()) {
+			cout << "El nombre no tiene que ser vacio:";
+		}
+	} while (entradaVacia || nombre.empty());
+	bool bandera = true;
 	cout << "Elija un genero: " << endl;
-	cout
-			<< "0. Acción \n1. Aventura \n2. Comedia \n3. Estrategia \n4. Shooter \n5. MOBA"
-			<< endl;
-	cin >> genero;
+	do {
+		cout
+				<< "0. Acción \n1. Aventura \n2. Comedia \n3. Estrategia \n4. Shooter \n5. MOBA"
+				<< endl;
+		cin >> entrada;
+		while (!validarNumero(entrada)) {
+			cout << "La entrada no es un entero válido." << endl;
+			cout << "Ingrese nuevamente: ";
+			cin >> entrada;
+		}
+		genero = stoi(entrada);
+		if (genero >= 0 && genero <= 5) {
+			bandera = false;
+		} else {
+			cout << "Elija un numero entre el 0 y 5: " << endl;
+		}
+	} while (bandera);
 	fflush(stdin);
 }
 
@@ -141,8 +194,8 @@ void generar(Sistema *s) {
 	s->agregarVideojuego("Terraria", Aventura);
 	s->agregarJugador("Maleelprofe", 24, "bgd4f435");
 	s->agregarVideojuego("GTA", Accion);
-	DTFecha* f;
-	Partida* part = new PartidaIndividual(f, 24.3, true);
+	DTFecha *f;
+	Partida *part = new PartidaIndividual(f, 24.3, true);
 	s->iniciarPartida("Marmadux", "Smite", part);
 	part = new PartidaIndividual(f, 35.2, false);
 	vector<string> jugadores;
@@ -157,52 +210,83 @@ void generar(Sistema *s) {
 	s->iniciarPartida("Angeloturrito", "Smite", part);
 	part = new PartidaMultijugador(f, 23.2, true, 4, jugadores);
 	s->iniciarPartida("Judy456", "Smite", part);
-	cout<< "Datos generados correctamente"<< endl;
+	cout << "Datos generados correctamente" << endl;
 }
 
 void obtJugadores(int &cant) {
+	string entrada;
 	cout << "Ingrese cantidad de jugadores a obtener: ";
-	cin >> cant;
+	cin >> entrada;
+	while (!validarNumero(entrada)) {
+		cout << "La entrada no es un número entero válido." << endl;
+		cout << "Ingrese nuevamente: ";
+		cin >> entrada;
+	}
+	cant = stoi(entrada);
 	fflush(stdin);
 }
 
 void obtVideojuegos(int &cant) {
+	string entrada;
 	cout << "Ingrese cantidad de videojuegos a obtener: ";
-	cin >> cant;
+	cin >> entrada;
+	while (!validarNumero(entrada)) {
+		cout << "La entrada no es un número entero válido." << endl;
+		cout << "Ingrese nuevamente: ";
+		cin >> entrada;
+	}
+	cant = stoi(entrada);
 	fflush(stdin);
 }
 
 void obtPartidas(string &videojuego, int &cant) {
+	string entrada;
+	bool entradaVacia = false;
 	cout << "Ingrese nombre del videojuego: ";
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    getline(cin, videojuego);
+	cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	do {
+		getline(cin, videojuego);
+		entradaVacia = std::all_of(videojuego.begin(), videojuego.end(),
+				[](char c) {
+					return std::isspace(c);
+				});
+		if (entradaVacia || videojuego.empty()) {
+			cout << "El nombre no tiene que ser vacio:";
+		}
+	} while (entradaVacia || videojuego.empty());
 	cout << "Ingrese cantidad de partidas: ";
-	cin >> cant;
-	fflush(stdin);
+	cin >> entrada;
+	while (!validarNumero(entrada)) {
+		cout << "La entrada no es un número entero válido." << endl;
+		cout << "Ingrese nuevamente: ";
+		cin >> entrada;
+	}
+	cant = stoi(entrada);
 }
 
-void iniPartida(string &nickname, string &videojuego, Partida* &p, Sistema* s) {
+void iniPartida(string &nickname, string &videojuego, Partida *&p, Sistema *s) {
 	string tipo, booleano, nick;
+	string entrada;
 	float duracion;
 	int cant;
 	vector<string> lista;
 	cout << "Ingrese nombre del jugador: ";
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    getline(cin, nickname);
-	while(!s->existe(nickname, "Jugadores")){
+	cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	getline(cin, nickname);
+	while (!s->existe(nickname, "Jugadores")) {
 		cout << "Este jugador no existe: " << nickname << endl;
 		cout << "Ingrese nombre del jugador: ";
 
-	    getline(cin, nickname);
+		getline(cin, nickname);
 	}
 	cout << "Ingrese nombre del videojuego: ";
 
-    getline(cin, videojuego);
-	while(!s->existe(videojuego, "Juegos")){
+	getline(cin, videojuego);
+	while (!s->existe(videojuego, "Juegos")) {
 		cout << "Este juego no existe: " << videojuego << endl;
 		cout << "Ingrese nombre del videojuego: ";
 
-	    getline(cin, videojuego);
+		getline(cin, videojuego);
 	}
 	do {
 		cout << "Que tipo de partida es? I-Individual, M-Multijugador: ";
@@ -213,9 +297,15 @@ void iniPartida(string &nickname, string &videojuego, Partida* &p, Sistema* s) {
 		}
 	} while (tipo != "I" && tipo != "M");
 	cout << "Ingrese duracion de la partida, ejemplo: 34.3: ";
-	cin >> duracion;
+	cin >> entrada;
+	while (!validarFloat(entrada)) {
+		cout << "La entrada no es un float válido." << endl;
+		cout << "Ingrese nuevamente: ";
+		cin >> entrada;
+	}
+	duracion = stof(entrada);
 	fflush(stdin);
-	DTFecha * f;
+	DTFecha *f;
 	if (tipo == "I") {
 		do {
 			cout << "Es una continuacion? s/n ";
@@ -230,7 +320,7 @@ void iniPartida(string &nickname, string &videojuego, Partida* &p, Sistema* s) {
 		} else {
 			p = new PartidaIndividual(f, duracion, false);
 		}
-	}else {
+	} else {
 		do {
 			cout << "Es una transmitida en vivo? s/n ";
 			cin >> booleano;
@@ -240,17 +330,22 @@ void iniPartida(string &nickname, string &videojuego, Partida* &p, Sistema* s) {
 			}
 		} while (booleano != "s" && booleano != "n");
 		cout << "Cuantos jugadores van a unirse?" << endl;
-		cin >> cant;
+		cin >> entrada;
+		while (!validarNumero(entrada)) {
+			cout << "La entrada no es un entero válido." << endl;
+			cout << "Ingrese nuevamente: ";
+			cin >> entrada;
+		}
+		cant = stoi(entrada);
 		fflush(stdin);
 		cout << "Ingrese los " << cant << " jugadores:" << endl;
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		for (int i = 1; i <= cant; i++) {
 			cout << "Jugador N° " << i << endl;
-			cin.ignore(numeric_limits<streamsize>::max(), '\n');
-		    getline(cin, nick);
-			while (!s->existe(nick, "Jugadores")){
+			getline(cin, nick);
+			while (!s->existe(nick, "Jugadores")) {
 				cout << "El jugador no existe, intente de nuevo: " << endl;
-
-			    getline(cin, nick);
+				getline(cin, nick);
 			}
 			lista.push_back(nick);
 		}
@@ -263,9 +358,19 @@ void iniPartida(string &nickname, string &videojuego, Partida* &p, Sistema* s) {
 }
 
 void darHorasJuego(string &videojuego) {
+	bool entradaVacia = false;
 	cout << "Ingrese nombre del videojuego: ";
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    getline(cin, videojuego);
+	cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	do {
+		getline(cin, videojuego);
+		entradaVacia = all_of(videojuego.begin(), videojuego.end(),
+				[](char c) {
+					return isspace(c);
+				});
+		if (entradaVacia || videojuego.empty()) {
+			cout << "El nombre no tiene que ser vacio:";
+		}
+	} while (entradaVacia || videojuego.empty());
 }
 
 void mostrarVector(vector<Jugador*> jug, int cant) {
@@ -286,25 +391,63 @@ void mostrarVector(vector<VideoJuego*> vid, int cant) {
 }
 
 bool tiene_caracteres_especiales(string str) {
-    for (char c : str) {
-        if (!std::isalnum(c)) {
-            return true;
-        }
-    }
-    return false;
+	for (char c : str) {
+		if (!std::isalnum(c)) {
+			return true;
+		}
+	}
+	return false;
 }
 
 void mostrarVector(vector<Partida*> part, int cant) {
-	cout << "LISTA DE PARTIDAS" << endl;
-	for (auto i : part) {
-		//cant++;
-		PartidaIndividual* ind = dynamic_cast<PartidaIndividual*>(i);
-		if(ind){
-			cout << "Una partida individual con duracion: " << i->getDuracion() << " el dia " << i->getFecha()->getTime() << endl;
-		}else{
-			PartidaMultijugador* mul = dynamic_cast<PartidaMultijugador*>(i);
-			cout << "Una partida multijugador con duracion: " << i->getDuracion() << " y " << mul->getCantJugadores() << " jugadores" << " el dia " << i->getFecha()->getTime() << endl;
+	if (!part.empty()) {
+		cout << "LISTA DE PARTIDAS" << endl;
+		for (auto i : part) {
+			//cant++;
+			PartidaIndividual *ind = dynamic_cast<PartidaIndividual*>(i);
+			if (ind) {
+				cout << "Una partida individual con duracion: "
+						<< i->getDuracion() << " el dia "
+						<< i->getFecha()->getTime() << endl;
+			} else {
+				PartidaMultijugador *mul = dynamic_cast<PartidaMultijugador*>(i);
+				cout << "Una partida multijugador con duracion: "
+						<< i->getDuracion() << " y " << mul->getCantJugadores()
+						<< " jugadores" << " el dia "
+						<< i->getFecha()->getTime() << endl;
+			}
+		}
+		cout << "Se mostro la cantidad: " << cant << endl;
+	}
+}
+
+bool validarNumero(string input) {
+	bool is_numeric = true;
+	for (char c : input) {
+		if (!std::isdigit(c)) {
+			is_numeric = false;
+			break;
 		}
 	}
-	cout << "Se mostro la cantidad: " << cant << endl;
+	return is_numeric;
+}
+
+bool validarFloat(string input) {
+	bool is_numeric = true;
+	bool primerPunto = true;
+	for (char c : input) {
+		if (!std::isdigit(c)) {
+			if (primerPunto) {
+				if (!(c == '.')) {
+					is_numeric = false;
+					break;
+				}
+				primerPunto = false;
+			} else {
+				is_numeric = false;
+				break;
+			}
+		}
+	}
+	return is_numeric;
 }

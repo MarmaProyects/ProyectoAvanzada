@@ -120,26 +120,35 @@ vector<VideoJuego*> Sistema::obtenerVideojuegos(int &cantVideoJuegos) {
 
 vector<Partida*> Sistema::obtenerPartidas(string videojuego,
 		int &cantPartidas) {
+
 	vector<Partida*> partidasVideoJuego;
 	VideoJuego *game;
 	int contador = 0;
-	for (auto i : this->juegos) {
-		if (i->getNombre() == videojuego) {
-			game = i;
-			break;
-		}
-	}
-
-	for (auto i : game->getPartidas()) {
-		if (contador < cantPartidas) {
-			partidasVideoJuego.push_back(i);
-			contador++;
+	try {
+		if (this->existe(videojuego, "Juegos")) {
+			for (auto i : this->juegos) {
+				if (i->getNombre() == videojuego) {
+					game = i;
+					break;
+				}
+			}
+			if (game) {
+				for (auto i : game->getPartidas()) {
+					if (contador < cantPartidas) {
+						partidasVideoJuego.push_back(i);
+						contador++;
+					} else {
+						break;
+					}
+				}
+			}
+			cantPartidas = contador;
 		} else {
-			break;
+			throw(videojuego);
 		}
+	} catch (string &juego) {
+		cout << "El juego no existe: " << juego << endl;
 	}
-	cantPartidas = contador;
-
 	return partidasVideoJuego;
 }
 
@@ -148,7 +157,7 @@ void Sistema::iniciarPartida(string nickname, string videojuego,
 	try {
 		if (this->existe(nickname, "Jugadores")) {
 			if (this->existe(videojuego, "Juegos")) {
-				DTFecha* f = new DTFecha();
+				DTFecha *f = new DTFecha();
 				datos->setFecha(f);
 				for (auto i : this->getJugadores()) {
 					if (i->getNickname() == nickname) {
@@ -185,7 +194,7 @@ float Sistema::buscarVideojuego(string videojuego) {
 			throw(videojuego);
 		}
 	} catch (string &videojuego) {
-		cout << "VideoJuego no valido: " << videojuego << " \n";
+		cout << "VideoJuego no valido: " << videojuego << endl;
 	}
 	return NULL;
 }
