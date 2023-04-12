@@ -27,7 +27,7 @@ void crearJugador(string&, int&, string&);
 void crearVideojuego(int&, string&);
 void obtJugadores(int&);
 void obtVideojuegos(int&);
-void obtPartidas(string&, int&);
+void obtPartidas(string&, int&, Sistema*);
 void iniPartida(string&, string&, Partida*&, Sistema*);
 void darHorasJuego(string&);
 void mostrarVector(vector<Jugador*>, int);
@@ -75,7 +75,7 @@ int main() {
 			s->iniciarPartida(nickname, videojuego, part);
 			break;
 		case 6:
-			obtPartidas(videojuego, cantPartidas);
+			obtPartidas(videojuego, cantPartidas, s);
 			matchs = s->obtenerPartidas(videojuego, cantPartidas);
 			mostrarVector(matchs, cantPartidas);
 			break;
@@ -235,21 +235,18 @@ void obtVideojuegos(int &cant) {
 	fflush(stdin);
 }
 
-void obtPartidas(string &videojuego, int &cant) {
+void obtPartidas(string &videojuego, int &cant, Sistema* s) {
 	string entrada;
 	bool entradaVacia = false;
 	cout << "Ingrese nombre del videojuego: ";
 	cin.ignore(numeric_limits<streamsize>::max(), '\n');
-	do {
+	getline(cin, videojuego);
+	while (!s->existe(videojuego, "Juegos")) {
+		cout << "Este juego no existe: " << videojuego << endl;
+		cout << "Ingrese nombre del videojuego: ";
+
 		getline(cin, videojuego);
-		entradaVacia = std::all_of(videojuego.begin(), videojuego.end(),
-				[](char c) {
-					return std::isspace(c);
-				});
-		if (entradaVacia || videojuego.empty()) {
-			cout << "El nombre no tiene que ser vacio:";
-		}
-	} while (entradaVacia || videojuego.empty());
+	}
 	cout << "Ingrese cantidad de partidas: ";
 	cin >> entrada;
 	while (!validarNumero(entrada)) {
@@ -417,9 +414,9 @@ void mostrarVector(vector<Partida*> part, int cant) {
 				cout << endl;
 			} else {
 				PartidaMultijugador *mul = dynamic_cast<PartidaMultijugador*>(i);
-				cout << "Partida multijugador con duracion: "
-						<< i->getDuracion() << " y " << mul->getCantJugadores()
-						<< " jugadores," << " el dia "
+				cout << "Partida multijugador con duracion "
+						<< i->getDuracion() << ", de" << mul->getCantJugadores()
+						<< " jugadores, en el dia "
 						<< i->getFecha()->getTime();
 				if (mul->getTransmitidaEnVivo()) {
 					cout << " - Es transmitida en vivo.";
