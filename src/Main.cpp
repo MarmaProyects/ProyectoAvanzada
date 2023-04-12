@@ -68,16 +68,16 @@ int main() {
 		case 4:
 			obtVideojuegos(cantVideojuegos);
 			games = s->obtenerVideojuegos(cantVideojuegos);
-			mostrarVector(games, cantJugadores);
+			mostrarVector(games, cantVideojuegos);
 			break;
 		case 5:
+			iniPartida(nickname, videojuego, part, s);
+			s->iniciarPartida(nickname, videojuego, part);
+			break;
+		case 6:
 			obtPartidas(videojuego, cantPartidas);
 			matchs = s->obtenerPartidas(videojuego, cantPartidas);
 			mostrarVector(matchs, cantPartidas);
-			break;
-		case 6:
-			iniPartida(nickname, videojuego, part, s);
-			s->iniciarPartida(nickname, videojuego, part);
 			break;
 		case 7:
 			darHorasJuego(videojuego);
@@ -85,9 +85,6 @@ int main() {
 			if (horas) {
 				cout << "Este videojuego tiene: " << horas << " horas";
 			}
-			break;
-		case 8:
-			generar(s);
 			break;
 		default:
 			cout << "Ingrese un numero especificado en el menu" << endl;
@@ -104,10 +101,9 @@ void menu() {
 	cout << "2. Agregar videojuegos" << endl;
 	cout << "3. Obtener jugadores" << endl;
 	cout << "4. Obtener videojuegos" << endl;
-	cout << "5. Obtener partidas" << endl;
-	cout << "6. Iniciar partida" << endl;
+	cout << "5. Iniciar partida" << endl;
+	cout << "6. Obtener partidas" << endl;
 	cout << "7. Ver total horas de juegos" << endl;
-	cout << "8. Generar datos" << endl;
 	cout << "0. Salir del programa." << endl;
 }
 
@@ -185,7 +181,7 @@ void crearVideojuego(int &genero, string &nombre) {
 	fflush(stdin);
 }
 
-void generar(Sistema *s) {
+void generar(Sistema *s) { //TODO no funciona bien
 	s->agregarJugador("MarmaduX", 24, "43242");
 	s->agregarVideojuego("Smite", MOBA);
 	s->agregarJugador("Judy456", 19, "bgdf435");
@@ -270,6 +266,7 @@ void iniPartida(string &nickname, string &videojuego, Partida *&p, Sistema *s) {
 	float duracion;
 	int cant;
 	vector<string> lista;
+	vector<Jugador*> players = s->getJugadores();
 	cout << "Ingrese nombre del jugador: ";
 	cin.ignore(numeric_limits<streamsize>::max(), '\n');
 	getline(cin, nickname);
@@ -331,13 +328,19 @@ void iniPartida(string &nickname, string &videojuego, Partida *&p, Sistema *s) {
 		} while (booleano != "s" && booleano != "n");
 		cout << "Cuantos jugadores van a unirse?" << endl;
 		cin >> entrada;
-		while (!validarNumero(entrada)) {
+		while (!validarNumero(entrada) || !stoi(entrada) != 0) {
 			cout << "La entrada no es un entero válido." << endl;
 			cout << "Ingrese nuevamente: ";
 			cin >> entrada;
 		}
 		cant = stoi(entrada);
 		fflush(stdin);
+		while(players.size() < cant) {
+			cout << "Se ingresó una cantidad de jugadores mayor a los registrados. \n"
+				 << "Ingrese de nuevo: ";
+			cin >> entrada;
+			cant = stoi(entrada);
+		}
 		cout << "Ingrese los " << cant << " jugadores:" << endl;
 		cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		for (int i = 1; i <= cant; i++) {
@@ -363,10 +366,9 @@ void darHorasJuego(string &videojuego) {
 	cin.ignore(numeric_limits<streamsize>::max(), '\n');
 	do {
 		getline(cin, videojuego);
-		entradaVacia = all_of(videojuego.begin(), videojuego.end(),
-				[](char c) {
-					return isspace(c);
-				});
+		entradaVacia = all_of(videojuego.begin(), videojuego.end(), [](char c) {
+			return isspace(c);
+		});
 		if (entradaVacia || videojuego.empty()) {
 			cout << "El nombre no tiene que ser vacio:";
 		}
@@ -406,18 +408,29 @@ void mostrarVector(vector<Partida*> part, int cant) {
 			//cant++;
 			PartidaIndividual *ind = dynamic_cast<PartidaIndividual*>(i);
 			if (ind) {
-				cout << "Una partida individual con duracion: "
-						<< i->getDuracion() << " el dia "
-						<< i->getFecha()->getTime() << endl;
+				cout << "Partida individual con duracion: "
+						<< i->getDuracion() << ", el dia "
+						<< i->getFecha()->getTime();
+				if (ind->getContinuaPartidaAnterior()) {
+					cout << " - Es una continuacion de partida.";
+				}
+				cout << endl;
 			} else {
 				PartidaMultijugador *mul = dynamic_cast<PartidaMultijugador*>(i);
-				cout << "Una partida multijugador con duracion: "
+				cout << "Partida multijugador con duracion: "
 						<< i->getDuracion() << " y " << mul->getCantJugadores()
-						<< " jugadores" << " el dia "
-						<< i->getFecha()->getTime() << endl;
+						<< " jugadores," << " el dia "
+						<< i->getFecha()->getTime();
+				if (mul->getTransmitidaEnVivo()) {
+					cout << " - Es transmitida en vivo.";
+				}
+				cout << endl;
 			}
 		}
 		cout << "Se mostro la cantidad: " << cant << endl;
+	}
+	else {
+		cout << "No tiene partidas. \n";
 	}
 }
 
