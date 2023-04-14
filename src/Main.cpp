@@ -235,7 +235,7 @@ void obtVideojuegos(int &cant) {
 	fflush(stdin);
 }
 
-void obtPartidas(string &videojuego, int &cant, Sistema* s) {
+void obtPartidas(string &videojuego, int &cant, Sistema *s) {
 	string entrada;
 	bool entradaVacia = false;
 	cout << "Ingrese nombre del videojuego: ";
@@ -332,9 +332,10 @@ void iniPartida(string &nickname, string &videojuego, Partida *&p, Sistema *s) {
 		}
 		cant = stoi(entrada);
 		fflush(stdin);
-		while(players.size() < cant) {
-			cout << "Se ingresó una cantidad de jugadores mayor a los registrados. \n"
-				 << "Ingrese de nuevo: ";
+		while (players.size() < cant) {
+			cout
+					<< "Se ingresó una cantidad de jugadores mayor a los registrados. \n"
+					<< "Ingrese de nuevo: ";
 			cin >> entrada;
 			cant = stoi(entrada);
 		}
@@ -382,9 +383,32 @@ void mostrarVector(vector<Jugador*> jug, int cant) {
 
 void mostrarVector(vector<VideoJuego*> vid, int cant) {
 	cout << "LISTA DE VIDEOJUEGOS" << endl;
+	string nombre;
 	for (auto i : vid) {
+		nombre = i->getNombre();
 		//cant++;
-		cout << i->getNombre() << endl;
+		cout << nombre << " - ";
+		switch (i->getGenero()) {
+		case 0:
+			cout << "Accion";
+			break;
+		case 1:
+			cout << "Aventura";
+			break;
+		case 2:
+			cout << "Comedia";
+			break;
+		case 3:
+			cout << "Estrategia";
+			break;
+		case 4:
+			cout << "Shooter";
+			break;
+		case 5:
+			cout << "MOBA";
+			break;
+		}
+		cout << " - Total horas: " << i->getTotalHorasDeJuego() << endl;
 	}
 	cout << "Se mostro la cantidad: " << cant << endl;
 }
@@ -405,19 +429,17 @@ void mostrarVector(vector<Partida*> part, int cant) {
 			//cant++;
 			PartidaIndividual *ind = dynamic_cast<PartidaIndividual*>(i);
 			if (ind) {
-				cout << "Partida individual con duracion: "
-						<< i->getDuracion() << ", el dia "
-						<< i->getFecha()->getTime();
+				cout << "Partida individual con duracion: " << i->getDuracion()
+						<< ", el dia " << i->getFecha()->getTime();
 				if (ind->getContinuaPartidaAnterior()) {
 					cout << " - Es una continuacion de partida.";
 				}
 				cout << endl;
 			} else {
 				PartidaMultijugador *mul = dynamic_cast<PartidaMultijugador*>(i);
-				cout << "Partida multijugador con duracion "
-						<< i->getDuracion() << ", de" << mul->getCantJugadores()
-						<< " jugadores, en el dia "
-						<< i->getFecha()->getTime();
+				cout << "Partida multijugador con duracion " << i->getDuracion()
+						<< ", de" << mul->getCantJugadores()
+						<< " jugadores, en el dia " << i->getFecha()->getTime();
 				if (mul->getTransmitidaEnVivo()) {
 					cout << " - Es transmitida en vivo.";
 				}
@@ -425,8 +447,7 @@ void mostrarVector(vector<Partida*> part, int cant) {
 			}
 		}
 		cout << "Se mostro la cantidad: " << cant << endl;
-	}
-	else {
+	} else {
 		cout << "No tiene partidas. \n";
 	}
 }

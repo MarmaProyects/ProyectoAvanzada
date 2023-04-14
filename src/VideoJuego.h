@@ -24,7 +24,7 @@ private:
 	string nombre;
 	TipoJuego genero;
 	vector<Partida*> partidas;
-	float totalHorasDeJuego;
+	float totalHorasDeJuego = 0;
 public:
 	VideoJuego();
 	VideoJuego(string, TipoJuego);
