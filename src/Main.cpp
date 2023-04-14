@@ -40,7 +40,7 @@ int main() {
 			cantPartidas = 0;
 	string nickname, contrasenia, nombre, videojuego;
 	int genero;
-	float horas;
+	//float horas;
 	vector<Jugador*> players;
 	vector<VideoJuego*> games;
 	vector<Partida*> matchs;
@@ -79,13 +79,6 @@ int main() {
 			matchs = s->obtenerPartidas(videojuego, cantPartidas);
 			mostrarVector(matchs, cantPartidas);
 			break;
-		case 7:
-			darHorasJuego(videojuego);
-			horas = s->buscarVideojuego(videojuego);
-			if (horas) {
-				cout << "Este videojuego tiene: " << horas << " horas";
-			}
-			break;
 		default:
 			cout << "Ingrese un numero especificado en el menu" << endl;
 			break;
@@ -103,7 +96,6 @@ void menu() {
 	cout << "4. Obtener videojuegos" << endl;
 	cout << "5. Iniciar partida" << endl;
 	cout << "6. Obtener partidas" << endl;
-	cout << "7. Ver total horas de juegos" << endl;
 	cout << "0. Salir del programa." << endl;
 }
 
@@ -190,21 +182,21 @@ void generar(Sistema *s) { //TODO no funciona bien
 	s->agregarVideojuego("Terraria", Aventura);
 	s->agregarJugador("Maleelprofe", 24, "bgd4f435");
 	s->agregarVideojuego("GTA", Accion);
-	DTFecha *f;
-	Partida *part = new PartidaIndividual(f, 24.3, true);
+	//DTFecha *f;
+	Partida *part = new PartidaIndividual(NULL, 24.3, true);
 	s->iniciarPartida("Marmadux", "Smite", part);
-	part = new PartidaIndividual(f, 35.2, false);
+	part = new PartidaIndividual(NULL, 35.2, false);
 	vector<string> jugadores;
 	jugadores.push_back("Marmadux");
 	jugadores.push_back("Judy456");
 	jugadores.push_back("Angeloturrito");
 	jugadores.push_back("Maleelprofe");
 	s->iniciarPartida("Marmadux", "Smite", part);
-	part = new PartidaMultijugador(f, 76.2, false, 3, jugadores);
+	part = new PartidaMultijugador(NULL, 76.2, false, 3, jugadores);
 	s->iniciarPartida("Marmadux", "Smite", part);
-	part = new PartidaMultijugador(f, 43.2, true, 2, jugadores);
+	part = new PartidaMultijugador(NULL, 43.2, true, 2, jugadores);
 	s->iniciarPartida("Angeloturrito", "Smite", part);
-	part = new PartidaMultijugador(f, 23.2, true, 4, jugadores);
+	part = new PartidaMultijugador(NULL, 23.2, true, 4, jugadores);
 	s->iniciarPartida("Judy456", "Smite", part);
 	cout << "Datos generados correctamente" << endl;
 }
@@ -237,7 +229,6 @@ void obtVideojuegos(int &cant) {
 
 void obtPartidas(string &videojuego, int &cant, Sistema *s) {
 	string entrada;
-	bool entradaVacia = false;
 	cout << "Ingrese nombre del videojuego: ";
 	cin.ignore(numeric_limits<streamsize>::max(), '\n');
 	getline(cin, videojuego);
@@ -376,39 +367,40 @@ void darHorasJuego(string &videojuego) {
 void mostrarVector(vector<Jugador*> jug, int cant) {
 	cout << "LISTA DE JUGADORES" << endl;
 	for (auto i : jug) {
-		cout << i->getNickname() << endl;
+		cout << i->getNickname() ;
 	}
 	cout << "Se mostro la cantidad: " << cant << endl;
 }
 
 void mostrarVector(vector<VideoJuego*> vid, int cant) {
-	cout << "LISTA DE VIDEOJUEGOS" << endl;
+	cout << "LISTA DE VIDEOJUEGOS" << endl << endl;
 	string nombre;
+	string genero;
 	for (auto i : vid) {
 		nombre = i->getNombre();
 		//cant++;
-		cout << nombre << " - ";
 		switch (i->getGenero()) {
 		case 0:
-			cout << "Accion";
+			genero = "Accion";
 			break;
 		case 1:
-			cout << "Aventura";
+			genero =  "Aventura";
 			break;
 		case 2:
-			cout << "Comedia";
+			genero =  "Comedia";
 			break;
 		case 3:
-			cout << "Estrategia";
+			genero =  "Estrategia";
 			break;
 		case 4:
-			cout << "Shooter";
+			genero = "Shooter";
 			break;
 		case 5:
-			cout << "MOBA";
+			genero =  "MOBA";
 			break;
 		}
-		cout << " - Total horas: " << i->getTotalHorasDeJuego() << endl;
+		cout << nombre << "Este juego es del genero: " << genero << " - Con un total de horas: " << i->getTotalHorasDeJuego() << endl;
+		cout << endl;
 	}
 	cout << "Se mostro la cantidad: " << cant << endl;
 }
@@ -438,7 +430,7 @@ void mostrarVector(vector<Partida*> part, int cant) {
 			} else {
 				PartidaMultijugador *mul = dynamic_cast<PartidaMultijugador*>(i);
 				cout << "Partida multijugador con duracion " << i->getDuracion()
-						<< ", de" << mul->getCantJugadores()
+						<< ", de " << mul->getCantJugadores()
 						<< " jugadores, en el dia " << i->getFecha()->getTime();
 				if (mul->getTransmitidaEnVivo()) {
 					cout << " - Es transmitida en vivo.";
